@@ -1,0 +1,63 @@
+<template>
+    <div class="slds-grid slds-wrap">
+
+        <nav class="slds-col slds-size_1-of-1">
+            <c-community-compliance-header candidate={candidate}></c-community-compliance-header>
+        </nav>
+
+        <main class="slds-col slds-size_1-of-1 slds-p-top_large slds-p-left_large">
+            <template if:true={statusPicklistValues}>
+                <lightning-layout multiple-rows="true" vertical-align="end">
+                    <lightning-layout-item size="6" small-device-size="2" medium-device-size="4" large-device-size="4" padding="around-small">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox name="Document Status"
+                                                        label="Document Status"
+                                                        value={docStatusValue}
+                                                        placeholder="-Select-"
+                                                        options={statusPicklistValues}
+                                                        onchange={handleChange} ></lightning-combobox>
+                                </div>
+                            </div>
+                    </lightning-layout-item>
+                </lightning-layout><br/>
+            </template>
+        </main>
+    
+        <main class="slds-col slds-size_1-of-2 slds-p-top_large slds-p-left_large">
+            <template if:true={candidateTickets}>
+                <template for:each={candidateTickets} for:item="candidateTicket">
+                    <c-community-compliance-card
+                        key={candidateTicket.Id}
+                        candidateticket={candidateTicket}>
+                    </c-community-compliance-card>
+                </template>
+            </template>
+            <template if:true={error}>
+                <p>No candidate compliance data was found.</p>
+            </template>
+            <template if:true={noDocData}>
+                <div class="slds-text-body_regular">
+                    You do not currently have any documents in the {docStatusValue} stage...
+                </div>
+            </template>
+        </main>
+    
+        <aside class="slds-col slds-size_1-of-2 slds-p-top_large slds-p-left_large slds-p-right_large">
+            <ul class="slds-timeline">
+            <template if:true={tasksAndEvents}>
+                <template for:each={tasksAndEvents} for:item="taskAndEvent">
+                    <c-community-compliance-timeline
+                        key={taskAndEvent.Id}
+                        task-and-event={taskAndEvent}>
+                    </c-community-compliance-timeline>
+                </template>
+            </template>
+            <template if:true={error}>
+                <p>No events were found</p>
+            </template>
+            </ul>
+        </aside>
+    
+    </div>
+</template>
